@@ -6,7 +6,7 @@ For IIS rewrite's I recommend using https://github.com/Bikeman868/UrlRewrite.Net
 
 ![Application](Docs/app.png)
 
-The application loads .csv files that are expected to be formatted in 2 columns sich as the following attached file [Redirect Example](Docs/Book1.csv).
+The application loads .csv files that are expected to be formatted in 2 columns sich as the following attached file [Redirect Example](Docs/Book1.csv). This example format can be given to a client who can create the redirects during content population
 
 The application will escape and clean up invalid characters where possibe. Also the app can generate postman tests, in this case a postman v2 collection will be created with all the URls and check to match the status code and the redirect. These can then be imported to postman to run or run in the PostmanCLI. **To Note** You must disable following of redirects in the postman settings for these to work correctly.
 
