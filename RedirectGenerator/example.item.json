@@ -1,0 +1,35 @@
+{
+  "name": "{NAME}",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "id": "{GUID}",
+        "exec": [
+          "pm.test(\"{NAME} - URL has been redirected\", function () {",
+          "    pm.response.to.have.status({STATUSCODE});",
+          "    pm.response.to.have.header(\"Location\");",
+          "    pm.response.to.be.header(\"Location\", \"{FULLTOURL}\");",
+          "});",
+          ""
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{FULLFROMUL}",
+      "protocol": "{PROTOCOL}",
+      "host": [
+        {HOSTS}
+      ],
+      "path": [
+        {PATHS}
+      ]
+    }
+  },
+  "response": []
+}
