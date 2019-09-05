@@ -6,4 +6,4 @@ For IIS rewrite's I recommend using https://github.com/Bikeman868/UrlRewrite.Net
 
 ![Application](Docs/app.png)
 
-The application loads .csv files that are expected to be formatted in 2 columns sich as the following attached file [Redirect Example](docs/Book1.csv).
+The application loads .csv files that are expected to be formatted in 2 columns sich as the following attached file [Redirect Example](Docs/Book1.csv).
