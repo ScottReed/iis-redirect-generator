@@ -151,8 +151,27 @@ namespace RedirectGenerator
 
                 if (hasForceDomain)
                 {
-                    oldUrl = forceDomain + oldUrl;
-                    newUrl = forceDomain + newUrl;
+                    var forceType = ForceTypeComboBox.SelectedItem.ToString();
+
+                    if (forceType == "Both" || forceType == "From")
+                    {
+                        var currentOldDomainInfo = Helpers.GetDomainInfo(oldUrl);
+                        if (!string.IsNullOrWhiteSpace(currentOldDomainInfo.Domain))
+                        {
+                            oldUrl = "/" + currentOldDomainInfo.Path + currentOldDomainInfo.QueryString;
+                        }
+                        oldUrl = forceDomain + oldUrl;
+                    }
+
+                    if (forceType == "Both" || forceType == "To")
+                    {
+                        var currentNewDomainInfo = Helpers.GetDomainInfo(newUrl);
+                        if (!string.IsNullOrWhiteSpace(currentNewDomainInfo.Domain))
+                        {
+                            newUrl = "/" + currentNewDomainInfo.Path + currentNewDomainInfo.QueryString;
+                        }
+                        newUrl = forceDomain + newUrl;
+                    }
                 }
 
                 if (AddTrailingFromSlashCheckBox.Checked)
@@ -339,6 +358,11 @@ namespace RedirectGenerator
             {
                 File.WriteAllText(PostmanSave.FileName, PostmanTextBox.Text.Trim());
             }
+        }
+
+        private void RedirectGenerator_Load(object sender, EventArgs e)
+        {
+            ForceTypeComboBox.SelectedIndex = 0;
         }
     }
 }

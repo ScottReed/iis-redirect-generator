@@ -60,6 +60,7 @@
             this.PostmanSave = new System.Windows.Forms.SaveFileDialog();
             this.EndWildCardMatch = new System.Windows.Forms.CheckBox();
             this.AddTrailingFromSlashCheckBox = new System.Windows.Forms.CheckBox();
+            this.ForceTypeComboBox = new System.Windows.Forms.ComboBox();
             this.GeneralGroupBox.SuspendLayout();
             this.PostmanGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -135,6 +136,7 @@
             // 
             // GeneralGroupBox
             // 
+            this.GeneralGroupBox.Controls.Add(this.ForceTypeComboBox);
             this.GeneralGroupBox.Controls.Add(this.AddTrailingFromSlashCheckBox);
             this.GeneralGroupBox.Controls.Add(this.EndWildCardMatch);
             this.GeneralGroupBox.Controls.Add(this.ForcedDomainLabel);
@@ -175,7 +177,7 @@
             this.ForcedDomainTextBox.Location = new System.Drawing.Point(166, 252);
             this.ForcedDomainTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ForcedDomainTextBox.Name = "ForcedDomainTextBox";
-            this.ForcedDomainTextBox.Size = new System.Drawing.Size(964, 26);
+            this.ForcedDomainTextBox.Size = new System.Drawing.Size(775, 26);
             this.ForcedDomainTextBox.TabIndex = 19;
             // 
             // label4
@@ -417,6 +419,22 @@
             this.AddTrailingFromSlashCheckBox.Text = "Add Trailing From Slash";
             this.AddTrailingFromSlashCheckBox.UseVisualStyleBackColor = true;
             // 
+            // ForceTypeComboBox
+            // 
+            this.ForceTypeComboBox.DisplayMember = "Name";
+            this.ForceTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ForceTypeComboBox.FormattingEnabled = true;
+            this.ForceTypeComboBox.Items.AddRange(new object[] {
+            "Both",
+            "From",
+            "To"});
+            this.ForceTypeComboBox.Location = new System.Drawing.Point(949, 252);
+            this.ForceTypeComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ForceTypeComboBox.Name = "ForceTypeComboBox";
+            this.ForceTypeComboBox.Size = new System.Drawing.Size(180, 28);
+            this.ForceTypeComboBox.TabIndex = 23;
+            this.ForceTypeComboBox.ValueMember = "Value";
+            // 
             // RedirectGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -434,6 +452,7 @@
             this.Name = "RedirectGenerator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Redirect Generator";
+            this.Load += new System.EventHandler(this.RedirectGenerator_Load);
             this.GeneralGroupBox.ResumeLayout(false);
             this.GeneralGroupBox.PerformLayout();
             this.PostmanGroupBox.ResumeLayout(false);
@@ -477,6 +496,7 @@
         private System.Windows.Forms.TextBox ForcedDomainTextBox;
         private System.Windows.Forms.CheckBox EndWildCardMatch;
         private System.Windows.Forms.CheckBox AddTrailingFromSlashCheckBox;
+        private System.Windows.Forms.ComboBox ForceTypeComboBox;
     }
 }
 
