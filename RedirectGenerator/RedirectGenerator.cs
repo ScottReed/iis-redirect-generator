@@ -138,59 +138,56 @@ namespace RedirectGenerator
             var ruleNamePrefix = string.IsNullOrWhiteSpace(RuleNamePrefixTextBox.Text)
                 ? "Rule"
                 : RuleNamePrefixTextBox.Text;
-
+            var forceDomain = ForcedDomainTextBox.Text.Trim().TrimEnd('/');
+            var hasForceDomain = !string.IsNullOrWhiteSpace(forceDomain);
 
             foreach (var redirect in redirects)
             {
-                var domainInfo = Helpers.GetDomainInfo(redirect.OldUrl);
-                var oldUrl = redirect.OldUrl.Trim(',', '"').Replace("\\", "/").Replace("\"", "").Replace("&", "&amp;").Replace("–", "-").Replace(" ", "%20").Trim();
-                var newUrl = redirect.NewUrl.Trim(',', '"').Replace("\\", "/").Replace("\"", "").Replace("&", "&amp;").Replace("–", "-").Replace(" ", "%20").Trim();
-                var domainInfoPath = domainInfo.Path.Trim(',', '"').Replace("&", "&amp;").Replace("–", "-").Replace(" ", "%20").Trim();
+                var oldUrl = redirect.OldUrl.CleanUrl();
+                var newUrl = redirect.NewUrl.CleanUrl();
 
-                if (string.IsNullOrEmpty(oldUrl) || string.IsNullOrEmpty(domainInfoPath))
+                if (string.IsNullOrEmpty(oldUrl) || string.IsNullOrEmpty(newUrl))
                     continue;
 
-                //newUrl = newUrl.TrimEnd('/');
-                newUrl = string.IsNullOrEmpty(newUrl) ? "/" : newUrl;
-
-                if (!newUrl.StartsWith("http://") && !newUrl.StartsWith("https://"))
+                if (hasForceDomain)
                 {
-                    var targetSiteUrl = "https://{HTTP_HOST}";
-                    newUrl = targetSiteUrl + newUrl;
+                    oldUrl = forceDomain + oldUrl;
+                    newUrl = forceDomain + newUrl;
                 }
 
-                var oldUrlParts = domainInfoPath.Split('?');
+                if (AddTrailingFromSlashCheckBox.Checked)
+                {
+                    oldUrl += "/";
+                }
+
+                var oldDomainInfo = Helpers.GetDomainInfo(oldUrl);
+
+                // Create rule header
                 sb.AppendLine("<rule name=\"" + ruleNamePrefix + index + "\" stopProcessing=\"true\">");
+
+                // Create match rule
                 sb.Append("<match url=\"^");
+                sb.Append(oldDomainInfo.Path);
 
-                var matchUrl = oldUrlParts[0];
-
-                matchUrl = Regex.Escape(matchUrl).Replace("]", "\\]").Replace("%20", " ");
-
-                if (!matchUrl.Contains('.') && !matchUrl.Contains('?'))
+                if (EndWildCardMatch.Checked)
                 {
-                    matchUrl = matchUrl.TrimEnd('/');
-                    matchUrl = $"{matchUrl}(/)?";
+                    sb.Append("(.*)");
                 }
-                sb.AppendLine(matchUrl + "$\" />");
 
-                if (oldUrlParts.Length > 1 || MatchDomainCheckBox.Checked)
+                sb.AppendLine("$\" />");
+
+                if (MatchDomainCheckBox.Checked || oldDomainInfo.HasQueryString)
                 {
                     sb.AppendLine("<conditions>");
-                    
+
                     if (MatchDomainCheckBox.Checked)
                     {
-                        var domainPattern = domainInfo.Domain.StartsWith("www.")
-                            ? $"^{domainInfo.Domain}$"
-                            : $"^(www.)?{domainInfo.Domain}$";
-
-
-                        sb.AppendLine("<add input=\"{HTTP_HOST}\" pattern=\"" + domainPattern + "\" />");                        
+                        sb.AppendLine("<add input=\"{HTTP_HOST}\" pattern=\"^(" + oldDomainInfo.Domain + ")\" />");
                     }
 
-                    if (oldUrlParts.Length > 1)
+                    if (oldDomainInfo.HasQueryString)
                     {
-                        sb.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"^" + Regex.Escape(oldUrlParts[1]).Replace("]", "\\]") + "$\" />");
+                        sb.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"^" + oldDomainInfo.QueryString + "$\" />");
                     }
                     else
                     {
@@ -200,7 +197,9 @@ namespace RedirectGenerator
                     sb.AppendLine("</conditions>");
                 }
 
-                sb.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + "\" appendQueryString=\"false\" redirectType=\"" + redirectType.StatusCode + "\"/>");                
+                var wildCardPattern = EndWildCardMatch.Checked ? "{R:1}" : string.Empty;
+
+                sb.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + "\" appendQueryString=\"false\" redirectType=\"" + redirectType.Value + "\"/>");
 
                 sb.AppendLine("</rule>");
                 index++;
@@ -230,7 +229,7 @@ namespace RedirectGenerator
                     var newUrl = redirect.NewUrl.Replace("\\", "/").Replace("\"", "");
                     var domainInfo = Helpers.GetDomainInfo(oldUrl);
                     var hostSegments = domainInfo.Domain.Split('.');
-                    var urlSegments = domainInfo.Path.Split('/');                    
+                    var urlSegments = domainInfo.Path.Split('/');
 
                     newUrl = string.IsNullOrEmpty(newUrl) ? "/" : newUrl;
                     if (!newUrl.StartsWith("http://") && !newUrl.StartsWith("https://"))

@@ -19,5 +19,11 @@
         /// </summary>
         /// <value>The path.</value>
         public string Path { get; set; }
+
+        public string QueryString { get; set; }
+
+        public bool hasWww { get; set; }
+        public bool IsSecure { get; set; }
+        public bool HasQueryString { get; set; }
     }
 }

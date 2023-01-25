@@ -1,5 +1,0 @@
-From,To
-https:///www.test.com,https:///www.test.com/redirect1/
-https:///www.test.com?test=test,https:///www.test.com/redirect2/
-https:///www.test.com/test/test/,https:///www.test.com/redirect3/
-https:///www.test.com/test/test/?test=test,
