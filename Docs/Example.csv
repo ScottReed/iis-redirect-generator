@@ -5,3 +5,4 @@ https://www.test.com/test/test/,https://www.test.com/redirect3/
 https://www.test.com/test/test/?test=test,https://www.google.com
 https://www.test.com/test test/,https://www.google.com
 https://www.test.com/test/test/?test=test&test2=test2,https://www.google.com
+https://www.test.com/test/*,https://www.google.com/

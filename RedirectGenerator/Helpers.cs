@@ -8,8 +8,9 @@ namespace RedirectGenerator
         /// Gets the domain information.
         /// </summary>
         /// <param name="url">The URL.</param>
+        /// <param name="stripWildCard">If to strip wildcard value</param>
         /// <returns>DomainInfo.</returns>
-        public static DomainInfo GetDomainInfo(string url)
+        public static DomainInfo GetDomainInfo(string url, bool stripWildCard = false)
         {
             var httpIndex = url.IndexOf("://", StringComparison.InvariantCultureIgnoreCase);
 
@@ -48,11 +49,19 @@ namespace RedirectGenerator
                 path = path.Substring(0, pathQs);
             }
 
+            var pathEndsWithStar = path.EndsWith("*");
+
+            if (pathEndsWithStar && stripWildCard)
+            {
+                path = path.TrimEnd('*');
+            }
+
             return new DomainInfo
             {
                 Domain = domain,
                 HttpMode = httpType,
                 Path = path,
+                PathEndsWithStar = pathEndsWithStar,
                 QueryString = queryString,
                 HasQueryString = !string.IsNullOrEmpty(queryString),
                 hasWww = domain.StartsWith("www"),

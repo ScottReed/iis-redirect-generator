@@ -25,5 +25,6 @@
         public bool hasWww { get; set; }
         public bool IsSecure { get; set; }
         public bool HasQueryString { get; set; }
+        public bool PathEndsWithStar { get; set; }
     }
 }

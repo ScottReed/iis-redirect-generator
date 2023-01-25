@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.CsvOpenDialog = new System.Windows.Forms.OpenFileDialog();
             this.FileTextBox = new System.Windows.Forms.TextBox();
             this.GenerateButton = new System.Windows.Forms.Button();
@@ -61,6 +62,8 @@
             this.EndWildCardMatch = new System.Windows.Forms.CheckBox();
             this.AddTrailingFromSlashCheckBox = new System.Windows.Forms.CheckBox();
             this.ForceTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.StarWildcardCheckBox = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.GeneralGroupBox.SuspendLayout();
             this.PostmanGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -136,6 +139,7 @@
             // 
             // GeneralGroupBox
             // 
+            this.GeneralGroupBox.Controls.Add(this.StarWildcardCheckBox);
             this.GeneralGroupBox.Controls.Add(this.ForceTypeComboBox);
             this.GeneralGroupBox.Controls.Add(this.AddTrailingFromSlashCheckBox);
             this.GeneralGroupBox.Controls.Add(this.EndWildCardMatch);
@@ -171,6 +175,8 @@
             this.ForcedDomainLabel.Size = new System.Drawing.Size(109, 20);
             this.ForcedDomainLabel.TabIndex = 20;
             this.ForcedDomainLabel.Text = "Force Domain";
+            this.toolTip1.SetToolTip(this.ForcedDomainLabel, "When domain is force it replaces the set domain on a line based on set type of Bo" +
+        "th, Old or New");
             // 
             // ForcedDomainTextBox
             // 
@@ -227,6 +233,8 @@
             this.MatchDomainCheckBox.Size = new System.Drawing.Size(138, 24);
             this.MatchDomainCheckBox.TabIndex = 14;
             this.MatchDomainCheckBox.Text = "Match Domain";
+            this.toolTip1.SetToolTip(this.MatchDomainCheckBox, "When checked the rule will only match the set domain, otherwise it will be relati" +
+        "ve");
             this.MatchDomainCheckBox.UseVisualStyleBackColor = true;
             // 
             // GenerateRedirectsCheckBox
@@ -249,6 +257,7 @@
             this.IgnoreLine1CheckBox.Size = new System.Drawing.Size(128, 24);
             this.IgnoreLine1CheckBox.TabIndex = 13;
             this.IgnoreLine1CheckBox.Text = "Ignore Line 1";
+            this.toolTip1.SetToolTip(this.IgnoreLine1CheckBox, "If the first line contains headings check to ignore");
             this.IgnoreLine1CheckBox.UseVisualStyleBackColor = true;
             // 
             // FileSelectButton
@@ -406,6 +415,8 @@
             this.EndWildCardMatch.Size = new System.Drawing.Size(177, 24);
             this.EndWildCardMatch.TabIndex = 21;
             this.EndWildCardMatch.Text = "End Wildcard Match";
+            this.toolTip1.SetToolTip(this.EndWildCardMatch, "When checked adds a wildcard match that matches any end of url and added to the e" +
+        "nd of the redirect URL");
             this.EndWildCardMatch.UseVisualStyleBackColor = true;
             // 
             // AddTrailingFromSlashCheckBox
@@ -414,9 +425,10 @@
             this.AddTrailingFromSlashCheckBox.Location = new System.Drawing.Point(356, 207);
             this.AddTrailingFromSlashCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.AddTrailingFromSlashCheckBox.Name = "AddTrailingFromSlashCheckBox";
-            this.AddTrailingFromSlashCheckBox.Size = new System.Drawing.Size(203, 24);
+            this.AddTrailingFromSlashCheckBox.Size = new System.Drawing.Size(280, 24);
             this.AddTrailingFromSlashCheckBox.TabIndex = 22;
-            this.AddTrailingFromSlashCheckBox.Text = "Add Trailing From Slash";
+            this.AddTrailingFromSlashCheckBox.Text = "Add Trailing From Slash On Old Url";
+            this.toolTip1.SetToolTip(this.AddTrailingFromSlashCheckBox, "When checked adds a training slash on to the old URL");
             this.AddTrailingFromSlashCheckBox.UseVisualStyleBackColor = true;
             // 
             // ForceTypeComboBox
@@ -434,6 +446,19 @@
             this.ForceTypeComboBox.Size = new System.Drawing.Size(180, 28);
             this.ForceTypeComboBox.TabIndex = 23;
             this.ForceTypeComboBox.ValueMember = "Value";
+            // 
+            // StarWildcardCheckBox
+            // 
+            this.StarWildcardCheckBox.AutoSize = true;
+            this.StarWildcardCheckBox.Location = new System.Drawing.Point(694, 207);
+            this.StarWildcardCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.StarWildcardCheckBox.Name = "StarWildcardCheckBox";
+            this.StarWildcardCheckBox.Size = new System.Drawing.Size(238, 24);
+            this.StarWildcardCheckBox.TabIndex = 24;
+            this.StarWildcardCheckBox.Text = "End Replace * With Wildcard";
+            this.toolTip1.SetToolTip(this.StarWildcardCheckBox, "When checked replaces a star at end of URL for a wildcard match that matches any " +
+        "end of url and added to the end of the redirect URL");
+            this.StarWildcardCheckBox.UseVisualStyleBackColor = true;
             // 
             // RedirectGenerator
             // 
@@ -497,6 +522,8 @@
         private System.Windows.Forms.CheckBox EndWildCardMatch;
         private System.Windows.Forms.CheckBox AddTrailingFromSlashCheckBox;
         private System.Windows.Forms.ComboBox ForceTypeComboBox;
+        private System.Windows.Forms.CheckBox StarWildcardCheckBox;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

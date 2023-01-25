@@ -179,7 +179,9 @@ namespace RedirectGenerator
                     oldUrl += "/";
                 }
 
-                var oldDomainInfo = Helpers.GetDomainInfo(oldUrl);
+                var oldDomainInfo = Helpers.GetDomainInfo(oldUrl, StarWildcardCheckBox.Checked);
+                var handleWildCards = EndWildCardMatch.Checked ||
+                                      (StarWildcardCheckBox.Checked && oldDomainInfo.PathEndsWithStar);
 
                 // Create rule header
                 sb.AppendLine("<rule name=\"" + ruleNamePrefix + index + "\" stopProcessing=\"true\">");
@@ -188,7 +190,7 @@ namespace RedirectGenerator
                 sb.Append("<match url=\"^");
                 sb.Append(oldDomainInfo.Path);
 
-                if (EndWildCardMatch.Checked)
+                if (handleWildCards)
                 {
                     sb.Append("(.*)");
                 }
@@ -216,8 +218,7 @@ namespace RedirectGenerator
                     sb.AppendLine("</conditions>");
                 }
 
-                var wildCardPattern = EndWildCardMatch.Checked ? "{R:1}" : string.Empty;
-
+                var wildCardPattern = handleWildCards ? "{R:1}" : string.Empty;
                 sb.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + "\" appendQueryString=\"false\" redirectType=\"" + redirectType.Value + "\"/>");
 
                 sb.AppendLine("</rule>");
