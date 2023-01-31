@@ -37,6 +37,11 @@
             this.RedirectTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.GeneralGroupBox = new System.Windows.Forms.GroupBox();
+            this.LinuxCheckBox = new System.Windows.Forms.CheckBox();
+            this.StarWildcardCheckBox = new System.Windows.Forms.CheckBox();
+            this.ForceTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.AddTrailingFromSlashCheckBox = new System.Windows.Forms.CheckBox();
+            this.EndWildCardMatch = new System.Windows.Forms.CheckBox();
             this.ForcedDomainLabel = new System.Windows.Forms.Label();
             this.ForcedDomainTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -59,10 +64,6 @@
             this.PostmanTextBox = new System.Windows.Forms.TextBox();
             this.SavePostmanButton = new System.Windows.Forms.Button();
             this.PostmanSave = new System.Windows.Forms.SaveFileDialog();
-            this.EndWildCardMatch = new System.Windows.Forms.CheckBox();
-            this.AddTrailingFromSlashCheckBox = new System.Windows.Forms.CheckBox();
-            this.ForceTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.StarWildcardCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.GeneralGroupBox.SuspendLayout();
             this.PostmanGroupBox.SuspendLayout();
@@ -139,6 +140,7 @@
             // 
             // GeneralGroupBox
             // 
+            this.GeneralGroupBox.Controls.Add(this.LinuxCheckBox);
             this.GeneralGroupBox.Controls.Add(this.StarWildcardCheckBox);
             this.GeneralGroupBox.Controls.Add(this.ForceTypeComboBox);
             this.GeneralGroupBox.Controls.Add(this.AddTrailingFromSlashCheckBox);
@@ -165,6 +167,72 @@
             this.GeneralGroupBox.TabIndex = 9;
             this.GeneralGroupBox.TabStop = false;
             this.GeneralGroupBox.Text = "General";
+            // 
+            // LinuxCheckBox
+            // 
+            this.LinuxCheckBox.AutoSize = true;
+            this.LinuxCheckBox.Location = new System.Drawing.Point(949, 207);
+            this.LinuxCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.LinuxCheckBox.Name = "LinuxCheckBox";
+            this.LinuxCheckBox.Size = new System.Drawing.Size(70, 24);
+            this.LinuxCheckBox.TabIndex = 25;
+            this.LinuxCheckBox.Text = "Lixux";
+            this.toolTip1.SetToolTip(this.LinuxCheckBox, "If the application is running on linux or the DXP");
+            this.LinuxCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // StarWildcardCheckBox
+            // 
+            this.StarWildcardCheckBox.AutoSize = true;
+            this.StarWildcardCheckBox.Location = new System.Drawing.Point(694, 207);
+            this.StarWildcardCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.StarWildcardCheckBox.Name = "StarWildcardCheckBox";
+            this.StarWildcardCheckBox.Size = new System.Drawing.Size(238, 24);
+            this.StarWildcardCheckBox.TabIndex = 24;
+            this.StarWildcardCheckBox.Text = "End Replace * With Wildcard";
+            this.toolTip1.SetToolTip(this.StarWildcardCheckBox, "When checked replaces a star at end of URL for a wildcard match that matches any " +
+        "end of url and added to the end of the redirect URL");
+            this.StarWildcardCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // ForceTypeComboBox
+            // 
+            this.ForceTypeComboBox.DisplayMember = "Name";
+            this.ForceTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ForceTypeComboBox.FormattingEnabled = true;
+            this.ForceTypeComboBox.Items.AddRange(new object[] {
+            "Both",
+            "From",
+            "To"});
+            this.ForceTypeComboBox.Location = new System.Drawing.Point(949, 252);
+            this.ForceTypeComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ForceTypeComboBox.Name = "ForceTypeComboBox";
+            this.ForceTypeComboBox.Size = new System.Drawing.Size(180, 28);
+            this.ForceTypeComboBox.TabIndex = 23;
+            this.ForceTypeComboBox.ValueMember = "Value";
+            // 
+            // AddTrailingFromSlashCheckBox
+            // 
+            this.AddTrailingFromSlashCheckBox.AutoSize = true;
+            this.AddTrailingFromSlashCheckBox.Location = new System.Drawing.Point(356, 207);
+            this.AddTrailingFromSlashCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AddTrailingFromSlashCheckBox.Name = "AddTrailingFromSlashCheckBox";
+            this.AddTrailingFromSlashCheckBox.Size = new System.Drawing.Size(280, 24);
+            this.AddTrailingFromSlashCheckBox.TabIndex = 22;
+            this.AddTrailingFromSlashCheckBox.Text = "Add Trailing From Slash On Old Url";
+            this.toolTip1.SetToolTip(this.AddTrailingFromSlashCheckBox, "When checked adds a training slash on to the old URL");
+            this.AddTrailingFromSlashCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // EndWildCardMatch
+            // 
+            this.EndWildCardMatch.AutoSize = true;
+            this.EndWildCardMatch.Location = new System.Drawing.Point(496, 159);
+            this.EndWildCardMatch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.EndWildCardMatch.Name = "EndWildCardMatch";
+            this.EndWildCardMatch.Size = new System.Drawing.Size(177, 24);
+            this.EndWildCardMatch.TabIndex = 21;
+            this.EndWildCardMatch.Text = "End Wildcard Match";
+            this.toolTip1.SetToolTip(this.EndWildCardMatch, "When checked adds a wildcard match that matches any end of url and added to the e" +
+        "nd of the redirect URL");
+            this.EndWildCardMatch.UseVisualStyleBackColor = true;
             // 
             // ForcedDomainLabel
             // 
@@ -406,60 +474,6 @@
             this.PostmanSave.Filter = "Postman Collection|*.postman_collection.json";
             this.PostmanSave.Title = "Save Postman Collection";
             // 
-            // EndWildCardMatch
-            // 
-            this.EndWildCardMatch.AutoSize = true;
-            this.EndWildCardMatch.Location = new System.Drawing.Point(496, 159);
-            this.EndWildCardMatch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.EndWildCardMatch.Name = "EndWildCardMatch";
-            this.EndWildCardMatch.Size = new System.Drawing.Size(177, 24);
-            this.EndWildCardMatch.TabIndex = 21;
-            this.EndWildCardMatch.Text = "End Wildcard Match";
-            this.toolTip1.SetToolTip(this.EndWildCardMatch, "When checked adds a wildcard match that matches any end of url and added to the e" +
-        "nd of the redirect URL");
-            this.EndWildCardMatch.UseVisualStyleBackColor = true;
-            // 
-            // AddTrailingFromSlashCheckBox
-            // 
-            this.AddTrailingFromSlashCheckBox.AutoSize = true;
-            this.AddTrailingFromSlashCheckBox.Location = new System.Drawing.Point(356, 207);
-            this.AddTrailingFromSlashCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.AddTrailingFromSlashCheckBox.Name = "AddTrailingFromSlashCheckBox";
-            this.AddTrailingFromSlashCheckBox.Size = new System.Drawing.Size(280, 24);
-            this.AddTrailingFromSlashCheckBox.TabIndex = 22;
-            this.AddTrailingFromSlashCheckBox.Text = "Add Trailing From Slash On Old Url";
-            this.toolTip1.SetToolTip(this.AddTrailingFromSlashCheckBox, "When checked adds a training slash on to the old URL");
-            this.AddTrailingFromSlashCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // ForceTypeComboBox
-            // 
-            this.ForceTypeComboBox.DisplayMember = "Name";
-            this.ForceTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ForceTypeComboBox.FormattingEnabled = true;
-            this.ForceTypeComboBox.Items.AddRange(new object[] {
-            "Both",
-            "From",
-            "To"});
-            this.ForceTypeComboBox.Location = new System.Drawing.Point(949, 252);
-            this.ForceTypeComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.ForceTypeComboBox.Name = "ForceTypeComboBox";
-            this.ForceTypeComboBox.Size = new System.Drawing.Size(180, 28);
-            this.ForceTypeComboBox.TabIndex = 23;
-            this.ForceTypeComboBox.ValueMember = "Value";
-            // 
-            // StarWildcardCheckBox
-            // 
-            this.StarWildcardCheckBox.AutoSize = true;
-            this.StarWildcardCheckBox.Location = new System.Drawing.Point(694, 207);
-            this.StarWildcardCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.StarWildcardCheckBox.Name = "StarWildcardCheckBox";
-            this.StarWildcardCheckBox.Size = new System.Drawing.Size(238, 24);
-            this.StarWildcardCheckBox.TabIndex = 24;
-            this.StarWildcardCheckBox.Text = "End Replace * With Wildcard";
-            this.toolTip1.SetToolTip(this.StarWildcardCheckBox, "When checked replaces a star at end of URL for a wildcard match that matches any " +
-        "end of url and added to the end of the redirect URL");
-            this.StarWildcardCheckBox.UseVisualStyleBackColor = true;
-            // 
             // RedirectGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -524,6 +538,7 @@
         private System.Windows.Forms.ComboBox ForceTypeComboBox;
         private System.Windows.Forms.CheckBox StarWildcardCheckBox;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox LinuxCheckBox;
     }
 }
 

@@ -140,13 +140,14 @@ namespace RedirectGenerator
                 : RuleNamePrefixTextBox.Text;
             var forceDomain = ForcedDomainTextBox.Text.Trim().TrimEnd('/');
             var hasForceDomain = !string.IsNullOrWhiteSpace(forceDomain);
+            var isLinux = LinuxCheckBox.Checked;
 
             foreach (var redirect in redirects)
             {
-                var oldUrl = redirect.OldUrl.CleanUrl();
-                var newUrl = redirect.NewUrl.CleanUrl();
+                var oldUrl = redirect.OldUrl.CleanUrl(isLinux);
+                var newUrl = redirect.NewUrl.CleanUrl(isLinux);
 
-                if (string.IsNullOrEmpty(oldUrl) || string.IsNullOrEmpty(newUrl))
+                if (string.IsNullOrEmpty(oldUrl) || string.IsNullOrEmpty(newUrl) || newUrl.Equals("#N/A", StringComparison.InvariantCultureIgnoreCase))
                     continue;
 
                 if (hasForceDomain)
@@ -180,6 +181,13 @@ namespace RedirectGenerator
                 }
 
                 var oldDomainInfo = Helpers.GetDomainInfo(oldUrl, StarWildcardCheckBox.Checked);
+                var newDomainInfo = Helpers.GetDomainInfo(newUrl);
+
+                if (!string.IsNullOrWhiteSpace(newDomainInfo.Domain))
+                {
+                    newUrl = newUrl.Replace(newDomainInfo.Domain, "{HTTP_HOST}"); // Replace to match any domain
+                }
+
                 var handleWildCards = EndWildCardMatch.Checked ||
                                       (StarWildcardCheckBox.Checked && oldDomainInfo.PathEndsWithStar);
 

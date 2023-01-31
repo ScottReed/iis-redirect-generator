@@ -14,24 +14,36 @@ namespace RedirectGenerator
         {
             var httpIndex = url.IndexOf("://", StringComparison.InvariantCultureIgnoreCase);
 
-            var httpType = url.Substring(0, httpIndex);
-            var mainUrl = url.Substring(httpIndex + 3);
-
-            var pathSplitterIndex = mainUrl.IndexOf('/');
-
+            string httpType;
             string domain;
             string path;
             var queryString = string.Empty;
 
-            if (pathSplitterIndex == -1)
+            // Does the URL start with HTTP/HTTPS prefix (://)
+            if (httpIndex == -1)
             {
-                domain = mainUrl.Substring(0);
-                path = string.Empty;
+                httpType = string.Empty;
+                domain = string.Empty;
+                path = url;
             }
             else
             {
-                domain = mainUrl.Substring(0, pathSplitterIndex);
-                path = mainUrl.Substring(pathSplitterIndex + 1);
+                httpType = url.Substring(0, httpIndex);
+                var mainUrl = url.Substring(httpIndex + 3);    
+
+                var pathSplitterIndex = mainUrl.IndexOf('/');
+
+                if (pathSplitterIndex == -1)
+                {
+                    domain = mainUrl;
+                    path = string.Empty;
+                }
+                else
+                {
+                    domain = mainUrl.Substring(0, pathSplitterIndex);
+                    path = mainUrl.Substring(pathSplitterIndex + 1);
+                }
+
             }
 
             var domainQs = domain.IndexOf('?');
@@ -56,6 +68,11 @@ namespace RedirectGenerator
                 path = path.TrimEnd('*');
             }
 
+            if (path.StartsWith("/"))
+            {
+                path = path.TrimStart('/');
+            }
+
             return new DomainInfo
             {
                 Domain = domain,
@@ -69,9 +86,15 @@ namespace RedirectGenerator
             };
         }
 
-        public static string CleanUrl(this string url)
+        public static string CleanUrl(this string url, bool isLinux)
         {
             var cleanUrl1 = url.Trim(',', '"').Replace("\\", "/").Replace("\"", "").Replace("&", "&amp;").Trim();
+
+            if (isLinux)
+            {
+                cleanUrl1 = url.Replace(" ", "%20");
+            }
+
             var httpIndex = url.IndexOf("://", StringComparison.InvariantCultureIgnoreCase);
 
             if (httpIndex == -1 && !cleanUrl1.StartsWith("/"))
