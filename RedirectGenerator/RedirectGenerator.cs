@@ -141,6 +141,7 @@ namespace RedirectGenerator
             var forceDomain = ForcedDomainTextBox.Text.Trim().TrimEnd('/');
             var hasForceDomain = !string.IsNullOrWhiteSpace(forceDomain);
             var isLinux = LinuxCheckBox.Checked;
+            var duplicateSpacesWithPlusRule = DuplicateSpaceWithPlusCheckBox.Checked;
 
             foreach (var redirect in redirects)
             {
@@ -196,7 +197,8 @@ namespace RedirectGenerator
 
                 // Create match rule
                 sb.Append("<match url=\"^");
-                sb.Append(oldDomainInfo.Path);
+
+                sb.Append(duplicateSpacesWithPlusRule ? oldDomainInfo.Path.Replace(" ", "[%20\\+]+") : oldDomainInfo.Path);
 
                 if (handleWildCards)
                 {
@@ -216,7 +218,13 @@ namespace RedirectGenerator
 
                     if (oldDomainInfo.HasQueryString)
                     {
-                        sb.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"^" + oldDomainInfo.QueryString + "$\" />");
+                        var querystringParts = oldDomainInfo.QueryString.Split('&');
+
+                        foreach (var querystringPart in querystringParts)
+                        {
+                            sb.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"(.*)" + querystringPart + "(.*)\" />");
+                        }
+                        
                     }
                     else
                     {

@@ -37,6 +37,7 @@
             this.RedirectTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.GeneralGroupBox = new System.Windows.Forms.GroupBox();
+            this.DuplicateSpaceWithPlusCheckBox = new System.Windows.Forms.CheckBox();
             this.LinuxCheckBox = new System.Windows.Forms.CheckBox();
             this.StarWildcardCheckBox = new System.Windows.Forms.CheckBox();
             this.ForceTypeComboBox = new System.Windows.Forms.ComboBox();
@@ -65,6 +66,7 @@
             this.SavePostmanButton = new System.Windows.Forms.Button();
             this.PostmanSave = new System.Windows.Forms.SaveFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.GeneralGroupBox.SuspendLayout();
             this.PostmanGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -140,6 +142,7 @@
             // 
             // GeneralGroupBox
             // 
+            this.GeneralGroupBox.Controls.Add(this.DuplicateSpaceWithPlusCheckBox);
             this.GeneralGroupBox.Controls.Add(this.LinuxCheckBox);
             this.GeneralGroupBox.Controls.Add(this.StarWildcardCheckBox);
             this.GeneralGroupBox.Controls.Add(this.ForceTypeComboBox);
@@ -167,6 +170,19 @@
             this.GeneralGroupBox.TabIndex = 9;
             this.GeneralGroupBox.TabStop = false;
             this.GeneralGroupBox.Text = "General";
+            // 
+            // DuplicateSpaceWithPlusCheckBox
+            // 
+            this.DuplicateSpaceWithPlusCheckBox.AutoSize = true;
+            this.DuplicateSpaceWithPlusCheckBox.Location = new System.Drawing.Point(110, 207);
+            this.DuplicateSpaceWithPlusCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.DuplicateSpaceWithPlusCheckBox.Name = "DuplicateSpaceWithPlusCheckBox";
+            this.DuplicateSpaceWithPlusCheckBox.Size = new System.Drawing.Size(222, 24);
+            this.DuplicateSpaceWithPlusCheckBox.TabIndex = 26;
+            this.DuplicateSpaceWithPlusCheckBox.Text = "Duplicate Space With Plus";
+            this.toolTip1.SetToolTip(this.DuplicateSpaceWithPlusCheckBox, "If this is selected a second rule will be added for any spaces that works with a " +
+        "plus");
+            this.DuplicateSpaceWithPlusCheckBox.UseVisualStyleBackColor = true;
             // 
             // LinuxCheckBox
             // 
@@ -474,11 +490,21 @@
             this.PostmanSave.Filter = "Postman Collection|*.postman_collection.json";
             this.PostmanSave.Title = "Save Postman Collection";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1180, 270);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // RedirectGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2316, 1254);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.SavePostmanButton);
             this.Controls.Add(this.CopyPostmanRules);
             this.Controls.Add(this.PostmanTextBox);
@@ -539,6 +565,8 @@
         private System.Windows.Forms.CheckBox StarWildcardCheckBox;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox LinuxCheckBox;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox DuplicateSpaceWithPlusCheckBox;
     }
 }
 
