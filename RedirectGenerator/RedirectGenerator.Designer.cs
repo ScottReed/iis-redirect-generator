@@ -37,6 +37,8 @@
             this.RedirectTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.GeneralGroupBox = new System.Windows.Forms.GroupBox();
+            this.AppendQueryStringCheckBox = new System.Windows.Forms.CheckBox();
+            this.IgnoreQueryStringMatchCheckBox = new System.Windows.Forms.CheckBox();
             this.DuplicateSpaceWithPlusCheckBox = new System.Windows.Forms.CheckBox();
             this.LinuxCheckBox = new System.Windows.Forms.CheckBox();
             this.StarWildcardCheckBox = new System.Windows.Forms.CheckBox();
@@ -87,7 +89,7 @@
             // 
             // GenerateButton
             // 
-            this.GenerateButton.Location = new System.Drawing.Point(12, 316);
+            this.GenerateButton.Location = new System.Drawing.Point(12, 463);
             this.GenerateButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.GenerateButton.Name = "GenerateButton";
             this.GenerateButton.Size = new System.Drawing.Size(2289, 35);
@@ -98,7 +100,7 @@
             // 
             // RulesTextBox
             // 
-            this.RulesTextBox.Location = new System.Drawing.Point(12, 361);
+            this.RulesTextBox.Location = new System.Drawing.Point(12, 508);
             this.RulesTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.RulesTextBox.Multiline = true;
             this.RulesTextBox.Name = "RulesTextBox";
@@ -108,7 +110,7 @@
             // 
             // CopyRulesButton
             // 
-            this.CopyRulesButton.Location = new System.Drawing.Point(12, 1200);
+            this.CopyRulesButton.Location = new System.Drawing.Point(12, 1347);
             this.CopyRulesButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CopyRulesButton.Name = "CopyRulesButton";
             this.CopyRulesButton.Size = new System.Drawing.Size(1131, 35);
@@ -141,6 +143,8 @@
             // 
             // GeneralGroupBox
             // 
+            this.GeneralGroupBox.Controls.Add(this.AppendQueryStringCheckBox);
+            this.GeneralGroupBox.Controls.Add(this.IgnoreQueryStringMatchCheckBox);
             this.GeneralGroupBox.Controls.Add(this.DuplicateSpaceWithPlusCheckBox);
             this.GeneralGroupBox.Controls.Add(this.LinuxCheckBox);
             this.GeneralGroupBox.Controls.Add(this.StarWildcardCheckBox);
@@ -165,10 +169,35 @@
             this.GeneralGroupBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.GeneralGroupBox.Name = "GeneralGroupBox";
             this.GeneralGroupBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.GeneralGroupBox.Size = new System.Drawing.Size(1140, 288);
+            this.GeneralGroupBox.Size = new System.Drawing.Size(1140, 425);
             this.GeneralGroupBox.TabIndex = 9;
             this.GeneralGroupBox.TabStop = false;
             this.GeneralGroupBox.Text = "General";
+            // 
+            // AppendQueryStringCheckBox
+            // 
+            this.AppendQueryStringCheckBox.AutoSize = true;
+            this.AppendQueryStringCheckBox.Location = new System.Drawing.Point(356, 257);
+            this.AppendQueryStringCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AppendQueryStringCheckBox.Name = "AppendQueryStringCheckBox";
+            this.AppendQueryStringCheckBox.Size = new System.Drawing.Size(266, 24);
+            this.AppendQueryStringCheckBox.TabIndex = 28;
+            this.AppendQueryStringCheckBox.Text = "Append Querstring On Redirects";
+            this.toolTip1.SetToolTip(this.AppendQueryStringCheckBox, "When checked the querystring will be passed through");
+            this.AppendQueryStringCheckBox.UseVisualStyleBackColor = true;
+            this.AppendQueryStringCheckBox.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // IgnoreQueryStringMatchCheckBox
+            // 
+            this.IgnoreQueryStringMatchCheckBox.AutoSize = true;
+            this.IgnoreQueryStringMatchCheckBox.Location = new System.Drawing.Point(694, 257);
+            this.IgnoreQueryStringMatchCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.IgnoreQueryStringMatchCheckBox.Name = "IgnoreQueryStringMatchCheckBox";
+            this.IgnoreQueryStringMatchCheckBox.Size = new System.Drawing.Size(280, 24);
+            this.IgnoreQueryStringMatchCheckBox.TabIndex = 27;
+            this.IgnoreQueryStringMatchCheckBox.Text = "Don\'t Match On Empty Querystring";
+            this.toolTip1.SetToolTip(this.IgnoreQueryStringMatchCheckBox, "When checked querystring matching will be ignored");
+            this.IgnoreQueryStringMatchCheckBox.UseVisualStyleBackColor = true;
             // 
             // DuplicateSpaceWithPlusCheckBox
             // 
@@ -217,7 +246,7 @@
             "Both",
             "From",
             "To"});
-            this.ForceTypeComboBox.Location = new System.Drawing.Point(949, 252);
+            this.ForceTypeComboBox.Location = new System.Drawing.Point(949, 367);
             this.ForceTypeComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ForceTypeComboBox.Name = "ForceTypeComboBox";
             this.ForceTypeComboBox.Size = new System.Drawing.Size(180, 28);
@@ -252,7 +281,7 @@
             // ForcedDomainLabel
             // 
             this.ForcedDomainLabel.AutoSize = true;
-            this.ForcedDomainLabel.Location = new System.Drawing.Point(16, 255);
+            this.ForcedDomainLabel.Location = new System.Drawing.Point(16, 370);
             this.ForcedDomainLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ForcedDomainLabel.Name = "ForcedDomainLabel";
             this.ForcedDomainLabel.Size = new System.Drawing.Size(109, 20);
@@ -263,7 +292,7 @@
             // 
             // ForcedDomainTextBox
             // 
-            this.ForcedDomainTextBox.Location = new System.Drawing.Point(166, 252);
+            this.ForcedDomainTextBox.Location = new System.Drawing.Point(166, 367);
             this.ForcedDomainTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ForcedDomainTextBox.Name = "ForcedDomainTextBox";
             this.ForcedDomainTextBox.Size = new System.Drawing.Size(775, 26);
@@ -376,7 +405,7 @@
             this.PostmanGroupBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.PostmanGroupBox.Name = "PostmanGroupBox";
             this.PostmanGroupBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.PostmanGroupBox.Size = new System.Drawing.Size(1140, 212);
+            this.PostmanGroupBox.Size = new System.Drawing.Size(1140, 425);
             this.PostmanGroupBox.TabIndex = 11;
             this.PostmanGroupBox.TabStop = false;
             this.PostmanGroupBox.Text = "Postman";
@@ -454,7 +483,7 @@
             // 
             // CopyPostmanRules
             // 
-            this.CopyPostmanRules.Location = new System.Drawing.Point(1161, 1200);
+            this.CopyPostmanRules.Location = new System.Drawing.Point(1161, 1347);
             this.CopyPostmanRules.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CopyPostmanRules.Name = "CopyPostmanRules";
             this.CopyPostmanRules.Size = new System.Drawing.Size(813, 35);
@@ -465,7 +494,7 @@
             // 
             // PostmanTextBox
             // 
-            this.PostmanTextBox.Location = new System.Drawing.Point(1161, 361);
+            this.PostmanTextBox.Location = new System.Drawing.Point(1161, 508);
             this.PostmanTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.PostmanTextBox.Multiline = true;
             this.PostmanTextBox.Name = "PostmanTextBox";
@@ -475,7 +504,7 @@
             // 
             // SavePostmanButton
             // 
-            this.SavePostmanButton.Location = new System.Drawing.Point(1983, 1200);
+            this.SavePostmanButton.Location = new System.Drawing.Point(1983, 1347);
             this.SavePostmanButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SavePostmanButton.Name = "SavePostmanButton";
             this.SavePostmanButton.Size = new System.Drawing.Size(315, 35);
@@ -493,7 +522,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2316, 1254);
+            this.ClientSize = new System.Drawing.Size(2316, 1428);
             this.Controls.Add(this.SavePostmanButton);
             this.Controls.Add(this.CopyPostmanRules);
             this.Controls.Add(this.PostmanTextBox);
@@ -555,6 +584,8 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox LinuxCheckBox;
         private System.Windows.Forms.CheckBox DuplicateSpaceWithPlusCheckBox;
+        private System.Windows.Forms.CheckBox AppendQueryStringCheckBox;
+        private System.Windows.Forms.CheckBox IgnoreQueryStringMatchCheckBox;
     }
 }
 

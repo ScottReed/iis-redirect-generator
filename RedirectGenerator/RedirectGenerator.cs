@@ -142,6 +142,7 @@ namespace RedirectGenerator
             var hasForceDomain = !string.IsNullOrWhiteSpace(forceDomain);
             var isLinux = LinuxCheckBox.Checked;
             var duplicateSpacesWithPlusRule = DuplicateSpaceWithPlusCheckBox.Checked;
+            var appendQsString = AppendQueryStringCheckBox.Checked ? "true" : "false";
 
             foreach (var redirect in redirects)
             {
@@ -218,26 +219,30 @@ namespace RedirectGenerator
                         ruleStringBuilder.AppendLine("<add input=\"{HTTP_HOST}\" pattern=\"^(" + oldDomainInfo.Domain + ")\" />");
                     }
 
-                    if (oldDomainInfo.HasQueryString)
+                    if (!IgnoreQueryStringMatchCheckBox.Checked)
                     {
-                        var querystringParts = oldDomainInfo.QueryString.Split('&');
-
-                        foreach (var querystringPart in querystringParts)
+                        if (oldDomainInfo.HasQueryString)
                         {
-                            ruleStringBuilder.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"(.*)" + querystringPart + "(.*)\" />");
+                            var querystringParts = oldDomainInfo.QueryString.Split('&');
+
+                            foreach (var querystringPart in querystringParts)
+                            {
+                                ruleStringBuilder.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"(.*)" +
+                                                             querystringPart + "(.*)\" />");
+                            }
+
                         }
-                        
-                    }
-                    else
-                    {
-                        ruleStringBuilder.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"^$\" />");
+                        else
+                        {
+                            ruleStringBuilder.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"^$\" />");
+                        }
                     }
 
                     ruleStringBuilder.AppendLine("</conditions>");
                 }
 
                 var wildCardPattern = handleWildCards ? "{R:1}" : string.Empty;
-                ruleStringBuilder.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + "\" appendQueryString=\"false\" redirectType=\"" + redirectType.Value + "\"/>");
+                ruleStringBuilder.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + "\" appendQueryString=\"" + appendQsString + "\" redirectType=\"" + redirectType.Value + "\"/>");
 
                 ruleStringBuilder.AppendLine("</rule>");
 
@@ -391,6 +396,11 @@ namespace RedirectGenerator
         private void RedirectGenerator_Load(object sender, EventArgs e)
         {
             ForceTypeComboBox.SelectedIndex = 0;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
