@@ -192,28 +192,30 @@ namespace RedirectGenerator
                 var handleWildCards = EndWildCardMatch.Checked ||
                                       (StarWildcardCheckBox.Checked && oldDomainInfo.PathEndsWithStar);
 
+                var ruleStringBuilder = new StringBuilder();
+
                 // Create rule header
-                sb.AppendLine("<rule name=\"" + ruleNamePrefix + index + "\" stopProcessing=\"true\">");
+                ruleStringBuilder.AppendLine("<rule name=\"" + ruleNamePrefix + index + "\" stopProcessing=\"true\">");
 
                 // Create match rule
-                sb.Append("<match url=\"^");
+                ruleStringBuilder.Append("<match url=\"^");
 
-                sb.Append(duplicateSpacesWithPlusRule ? oldDomainInfo.Path.Replace(" ", "[%20\\+]+") : oldDomainInfo.Path);
+                ruleStringBuilder.Append(duplicateSpacesWithPlusRule ? oldDomainInfo.Path.Replace(" ", "[%20\\+]+") : oldDomainInfo.Path);
 
                 if (handleWildCards)
                 {
-                    sb.Append("(.*)");
+                    ruleStringBuilder.Append("(.*)");
                 }
 
-                sb.AppendLine("$\" />");
+                ruleStringBuilder.AppendLine("$\" />");
 
                 if (MatchDomainCheckBox.Checked || oldDomainInfo.HasQueryString)
                 {
-                    sb.AppendLine("<conditions>");
+                    ruleStringBuilder.AppendLine("<conditions>");
 
                     if (MatchDomainCheckBox.Checked)
                     {
-                        sb.AppendLine("<add input=\"{HTTP_HOST}\" pattern=\"^(" + oldDomainInfo.Domain + ")\" />");
+                        ruleStringBuilder.AppendLine("<add input=\"{HTTP_HOST}\" pattern=\"^(" + oldDomainInfo.Domain + ")\" />");
                     }
 
                     if (oldDomainInfo.HasQueryString)
@@ -222,22 +224,31 @@ namespace RedirectGenerator
 
                         foreach (var querystringPart in querystringParts)
                         {
-                            sb.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"(.*)" + querystringPart + "(.*)\" />");
+                            ruleStringBuilder.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"(.*)" + querystringPart + "(.*)\" />");
                         }
                         
                     }
                     else
                     {
-                        sb.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"^$\" />");
+                        ruleStringBuilder.AppendLine("<add input=\"{QUERY_STRING}\" pattern=\"^$\" />");
                     }
 
-                    sb.AppendLine("</conditions>");
+                    ruleStringBuilder.AppendLine("</conditions>");
                 }
 
                 var wildCardPattern = handleWildCards ? "{R:1}" : string.Empty;
-                sb.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + "\" appendQueryString=\"false\" redirectType=\"" + redirectType.Value + "\"/>");
+                ruleStringBuilder.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + "\" appendQueryString=\"false\" redirectType=\"" + redirectType.Value + "\"/>");
 
-                sb.AppendLine("</rule>");
+                ruleStringBuilder.AppendLine("</rule>");
+
+                sb.Append(ruleStringBuilder);
+
+                if (oldDomainInfo.Path.EndsWith("index.htm"))
+                {
+                    sb.Append(ruleStringBuilder.ToString().Replace("\" stopProcessing", "-indexpath\" stopProcessing")
+                        .Replace("index.htm", string.Empty));
+                }
+
                 index++;
             }
 
