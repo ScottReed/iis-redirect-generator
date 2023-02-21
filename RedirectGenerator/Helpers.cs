@@ -92,7 +92,7 @@ namespace RedirectGenerator
 
             if (isLinux)
             {
-                cleanUrl1 = url.Replace(" ", "%20");
+                cleanUrl1 = cleanUrl1.Replace(" ", "%20");
             }
 
             var httpIndex = url.IndexOf("://", StringComparison.InvariantCultureIgnoreCase);

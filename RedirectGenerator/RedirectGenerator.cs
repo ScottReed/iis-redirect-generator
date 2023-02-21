@@ -67,33 +67,40 @@ namespace RedirectGenerator
 
             foreach (var csvFile in csvFiles)
             {
-                redirectList.AddRange(LoadRedirects(csvFile, ignoreLine1));
-            }
+                var redirects = LoadRedirects(csvFile, ignoreLine1);
 
-            var redirectType = (RedirectType)RedirectTypeComboBox.SelectedItem;
-
-            if (GenerateRedirectsCheckBox.Checked)
-            {
-                RulesTextBox.Text = GenerateRewriteRule(redirectList.ToArray(), redirectType);
-            }
-
-            if (GeneratePostmanTestsCheckBox.Checked)
-            {
-                PostmanTextBox.Text = GeneratePostmanCollection(redirectList.ToArray(), redirectType);
-            }
-
-            if (GeneratePostmanTestsCheckBox.Checked)
-            {
-                if (string.IsNullOrWhiteSpace(CollectionNameTextBox.Text.Trim()))
+                if (redirects != null)
                 {
-                    MessageBox.Show("You must set the collection name", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    redirectList.AddRange(redirects);
                 }
-                else
+            }
+
+            if (redirectList.Any())
+            {
+                var redirectType = (RedirectType)RedirectTypeComboBox.SelectedItem;
+
+                if (GenerateRedirectsCheckBox.Checked)
+                {
+                    RulesTextBox.Text = GenerateRewriteRule(redirectList.ToArray(), redirectType);
+                }
+
+                if (GeneratePostmanTestsCheckBox.Checked)
                 {
                     PostmanTextBox.Text = GeneratePostmanCollection(redirectList.ToArray(), redirectType);
                 }
+
+                if (GeneratePostmanTestsCheckBox.Checked)
+                {
+                    if (string.IsNullOrWhiteSpace(CollectionNameTextBox.Text.Trim()))
+                    {
+                        MessageBox.Show("You must set the collection name", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        PostmanTextBox.Text = GeneratePostmanCollection(redirectList.ToArray(), redirectType);
+                    }
+                }
             }
-;
         }
 
         /// <summary>
@@ -113,15 +120,23 @@ namespace RedirectGenerator
         /// <returns>Redirect[].</returns>
         private Redirect[] LoadRedirects(string csvFile, bool ignoreLine1)
         {
-            var engine = new FileHelperEngine<Redirect>
+            try
             {
-                Options =
+                var engine = new FileHelperEngine<Redirect>
                 {
-                    IgnoreFirstLines = ignoreLine1 ? 1 : 0
-                }
-            };
+                    Options =
+                    {
+                        IgnoreFirstLines = ignoreLine1 ? 1 : 0
+                    }
+                };
 
-            return engine.ReadFile(csvFile);
+                return engine.ReadFile(csvFile);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("File is in use", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
 
         /// <summary>
@@ -143,6 +158,9 @@ namespace RedirectGenerator
             var isLinux = LinuxCheckBox.Checked;
             var duplicateSpacesWithPlusRule = DuplicateSpaceWithPlusCheckBox.Checked;
             var appendQsString = AppendQueryStringCheckBox.Checked ? "true" : "false";
+            var newQueryStringUrl = string.Empty;
+            var additonalMatchDomainsValue = AdditionalMatchDomainsTextBox.Text.Trim().Replace("\n", "|");
+            additonalMatchDomainsValue = string.IsNullOrEmpty(additonalMatchDomainsValue) ? additonalMatchDomainsValue : "|" + additonalMatchDomainsValue;
 
             foreach (var redirect in redirects)
             {
@@ -190,6 +208,12 @@ namespace RedirectGenerator
                     newUrl = newUrl.Replace(newDomainInfo.Domain, "{HTTP_HOST}"); // Replace to match any domain
                 }
 
+                if (newDomainInfo.HasQueryString)
+                {
+                    newQueryStringUrl = "?" + newDomainInfo.QueryString;
+                    newUrl = newUrl.Replace("?" + newDomainInfo.QueryString, string.Empty);
+                }
+
                 var handleWildCards = EndWildCardMatch.Checked ||
                                       (StarWildcardCheckBox.Checked && oldDomainInfo.PathEndsWithStar);
 
@@ -201,7 +225,21 @@ namespace RedirectGenerator
                 // Create match rule
                 ruleStringBuilder.Append("<match url=\"^");
 
-                ruleStringBuilder.Append(duplicateSpacesWithPlusRule ? oldDomainInfo.Path.Replace(" ", "[%20\\+]+") : oldDomainInfo.Path);
+                if (duplicateSpacesWithPlusRule)
+                {
+                    if (isLinux)
+                    {
+                        ruleStringBuilder.Append(oldDomainInfo.Path.Replace("%20", "[%20\\+]+"));
+                    }
+                    else
+                    {
+                        ruleStringBuilder.Append(oldDomainInfo.Path.Replace(" ", "[%20\\+]+"));
+                    }
+                }
+                else
+                {
+                    ruleStringBuilder.Append(oldDomainInfo.Path);
+                }
 
                 if (handleWildCards)
                 {
@@ -216,7 +254,7 @@ namespace RedirectGenerator
 
                     if (MatchDomainCheckBox.Checked)
                     {
-                        ruleStringBuilder.AppendLine("<add input=\"{HTTP_HOST}\" pattern=\"^(" + oldDomainInfo.Domain + ")\" />");
+                        ruleStringBuilder.AppendLine("<add input=\"{HTTP_HOST}\" pattern=\"^(" + oldDomainInfo.Domain + additonalMatchDomainsValue + ")\" />");
                     }
 
                     if (!IgnoreQueryStringMatchCheckBox.Checked)
@@ -242,7 +280,7 @@ namespace RedirectGenerator
                 }
 
                 var wildCardPattern = handleWildCards ? "{R:1}" : string.Empty;
-                ruleStringBuilder.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + "\" appendQueryString=\"" + appendQsString + "\" redirectType=\"" + redirectType.Value + "\"/>");
+                ruleStringBuilder.AppendLine("<action type=\"Redirect\" url=\"" + newUrl + wildCardPattern + newQueryStringUrl + "\" appendQueryString=\"" + appendQsString + "\" redirectType=\"" + redirectType.Value + "\"/>");
 
                 ruleStringBuilder.AppendLine("</rule>");
 
@@ -406,6 +444,11 @@ namespace RedirectGenerator
         private void CopyRulesWithoutRuleNodeButton_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(RulesTextBox.Text.Replace("<rules>", string.Empty).Replace("</rules>", string.Empty).Trim());
+        }
+
+        private void AdditionalMatchDomains_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
