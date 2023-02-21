@@ -402,5 +402,10 @@ namespace RedirectGenerator
         {
 
         }
+
+        private void CopyRulesWithoutRuleNodeButton_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(RulesTextBox.Text.Replace("<rules>", string.Empty).Replace("</rules>", string.Empty).Trim());
+        }
     }
 }

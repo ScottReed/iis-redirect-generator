@@ -68,6 +68,7 @@
             this.SavePostmanButton = new System.Windows.Forms.Button();
             this.PostmanSave = new System.Windows.Forms.SaveFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.CopyRulesWithoutRuleNodeButton = new System.Windows.Forms.Button();
             this.GeneralGroupBox.SuspendLayout();
             this.PostmanGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -113,9 +114,9 @@
             this.CopyRulesButton.Location = new System.Drawing.Point(12, 1347);
             this.CopyRulesButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CopyRulesButton.Name = "CopyRulesButton";
-            this.CopyRulesButton.Size = new System.Drawing.Size(1131, 35);
+            this.CopyRulesButton.Size = new System.Drawing.Size(568, 35);
             this.CopyRulesButton.TabIndex = 3;
-            this.CopyRulesButton.Text = "Copy To Clipboard";
+            this.CopyRulesButton.Text = "Copy To Clipboard (With Rules Wrapper)";
             this.CopyRulesButton.UseVisualStyleBackColor = true;
             this.CopyRulesButton.Click += new System.EventHandler(this.CopyButton_Click);
             // 
@@ -518,11 +519,23 @@
             this.PostmanSave.Filter = "Postman Collection|*.postman_collection.json";
             this.PostmanSave.Title = "Save Postman Collection";
             // 
+            // CopyRulesWithoutRuleNodeButton
+            // 
+            this.CopyRulesWithoutRuleNodeButton.Location = new System.Drawing.Point(588, 1347);
+            this.CopyRulesWithoutRuleNodeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CopyRulesWithoutRuleNodeButton.Name = "CopyRulesWithoutRuleNodeButton";
+            this.CopyRulesWithoutRuleNodeButton.Size = new System.Drawing.Size(564, 35);
+            this.CopyRulesWithoutRuleNodeButton.TabIndex = 15;
+            this.CopyRulesWithoutRuleNodeButton.Text = "Copy To Clipboard (Rules Only)";
+            this.CopyRulesWithoutRuleNodeButton.UseVisualStyleBackColor = true;
+            this.CopyRulesWithoutRuleNodeButton.Click += new System.EventHandler(this.CopyRulesWithoutRuleNodeButton_Click);
+            // 
             // RedirectGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2316, 1428);
+            this.Controls.Add(this.CopyRulesWithoutRuleNodeButton);
             this.Controls.Add(this.SavePostmanButton);
             this.Controls.Add(this.CopyPostmanRules);
             this.Controls.Add(this.PostmanTextBox);
@@ -586,6 +599,7 @@
         private System.Windows.Forms.CheckBox DuplicateSpaceWithPlusCheckBox;
         private System.Windows.Forms.CheckBox AppendQueryStringCheckBox;
         private System.Windows.Forms.CheckBox IgnoreQueryStringMatchCheckBox;
+        private System.Windows.Forms.Button CopyRulesWithoutRuleNodeButton;
     }
 }
 
